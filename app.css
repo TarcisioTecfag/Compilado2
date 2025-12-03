@@ -415,6 +415,7 @@ body.login-active {
   box-shadow: none;
 }
 
+
 .topbar-left {
   display: flex;
   align-items: center;
@@ -1310,7 +1311,7 @@ body {
               linear-gradient(180deg, #06060a 0%, #0e0c13 60%, #09070e 100%);
   color: var(--text);
   min-height: 100vh;
-  padding-top: 82px;
+  padding-top: 0;
 }
 
 .page-header {
@@ -2507,6 +2508,22 @@ button:focus-visible {
       .catalog-grid {
         grid-template-columns: repeat(5, minmax(0, 1fr));
       }
+    }
+
+    /* Fixar a barra de menus totalmente no topo em qualquer resolução */
+    body.app-ready header.topbar {
+      position: fixed;
+      top: 0;
+      left: clamp(1rem, 3vw, 1.5rem);
+      right: clamp(1rem, 3vw, 1.5rem);
+      margin: 0 auto;
+      padding: 8px 14px;
+      border-radius: 12px;
+      transform: translateY(0);
+    }
+
+    body.app-ready .page-app {
+      padding-top: 96px;
     }
 
     @media (max-width: 992px) {
