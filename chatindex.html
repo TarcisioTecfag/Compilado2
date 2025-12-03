@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assistente TECFAG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="login-active">
+  <main id="login-section" class="login">
+    <section class="login__panel">
+      <div class="brand">
+        <span class="brand__dot"></span>
+        <div>
+          <strong>Assistente</strong>
+          <span>Tecfag</span>
+        </div>
+      </div>
+
+      <header class="login__header">
+        <p class="eyebrow">Bem-vindo de volta</p>
+        <h1>Acesse sua conta</h1>
+        <p class="subtitle">Use as credenciais fornecidas para continuar.</p>
+      </header>
+
+      <form id="login-form" class="login__form">
+        <label class="sr-only" for="email">E-mail</label>
+        <div class="input-group">
+          <input id="email" type="email" name="email" placeholder="E-mail" autocomplete="email" required autofocus />
+        </div>
+
+        <label class="sr-only" for="password">Senha</label>
+        <div class="input-group">
+          <input id="password" type="password" name="password" placeholder="Senha" autocomplete="current-password" required />
+        </div>
+
+        <div class="login__options">
+          <label class="remember">
+            <input type="checkbox" name="remember" id="remember" />
+            <span>Lembrar-me</span>
+          </label>
+          <a class="link" href="#">Esqueceu a senha?</a>
+        </div>
+
+        <button type="submit" class="btn btn--primary">Entrar</button>
+        <div id="login-error" class="error hidden" role="alert"></div>
+      </form>
+    </section>
+
+    <section class="login__hero">
+      <div class="hero__card">
+        <div class="hero__circle"></div>
+        <div class="hero__badge">Aprenda, enquanto vende!</div>
+        <div class="hero__content">
+          <p class="hero__label">Assistente Tecfag</p>
+          <h2>Conecte-se, aprenda e pratique com seu time em um só lugar.</h2>
+          <p class="hero__copy">Chat inteligente, Catálogos instantâneos e insights para decisões rápidas e seguras.</p>
+        </div>
+        <div class="hero__avatars">
+          <span class="hero__avatar"></span>
+          <span class="hero__avatar"></span>
+          <span class="hero__avatar"></span>
+          <div class="hero__pulse"></div>
+        </div>
+        <div class="hero__stats">
+          <div class="hero__stat">
+            <strong>+368</strong>
+            <span>Máquinas Catálogadas </span>
+          </div>
+          <div class="hero__stat">
+            <strong>99,9%</strong>
+            <span>Conversões Com Ténica Spiced</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="app" class="page page-app hidden">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="brand-btn" type="button">ASSISTENTE TECFAG</button>
+        <nav class="topbar-nav" aria-label="Atalhos">
+          <button class="nav-pill" type="button">Mapas Mentais</button>
+          <button class="nav-pill" type="button">Catálogos</button>
+          <button class="nav-pill" type="button">Dinâmicas</button>
+        </nav>
+      </div>
+      <div class="actions">
+        <button id="notification-button" class="icon-btn" title="Notificações">
+          <span>🔔</span>
+          <span id="notification-badge" class="badge-count hidden">0</span>
+        </button>
+        <button id="reload-button" class="icon-btn" title="Recarregar">🔁</button>
+        <button id="profile-button" class="icon-btn" title="Abrir navegação">👤</button>
+      </div>
+    </header>
+
+    <main id="home-view" class="layout">
+      <section class="chat-panel">
+        <div class="hero">
+          <p class="hero-text">Pergunte sobre qualquer máquina!</p>
+        </div>
+        <div class="chat-box">
+          <div class="chat-status">
+            <span class="spinner"></span>
+            <span class="status-label">Pensando</span>
+            <span class="status-caret">▾</span>
+          </div>
+          <form id="chat-form" class="chat-form">
+            <input id="chat-input" type="text" placeholder="Pergunte alguma coisa" required />
+            <div class="chat-actions">
+              <button type="button" class="icon-btn inactive" title="Anexar">+</button>
+              <button type="button" class="icon-btn inactive" title="Imagem">🖼️</button>
+              <button type="submit" class="icon-btn send" title="Enviar">📣</button>
+              <button id="clear-chat" type="button" class="icon-btn" title="Limpar histórico do chat">🗑️</button>
+            </div>
+          </form>
+        </div>
+
+        <div id="chat-thread" class="chat-thread"></div>
+      </section>
+
+      <aside id="monitoring-panel" class="side-panel">
+        <div class="card">
+          <div class="card-header">
+            <h3>Monitoramento</h3>
+            <span class="badge">Em tempo real</span>
+          </div>
+          <div id="interaction-log" class="interaction-log"></div>
+        </div>
+      </aside>
+    </main>
+
+    <aside id="admin-overlay" class="admin-overlay hidden">
+      <section class="chat-panel admin-panel">
+        <header class="admin-panel__header">
+          <div>
+            <p class="eyebrow">Opções de Administrador</p>
+            <h2>Painel avançado</h2>
+          </div>
+          <div class="admin-panel__actions">
+            <span class="badge">Apenas admins</span>
+            <button id="close-admin" class="icon-btn" title="Fechar painel">✕</button>
+          </div>
+        </header>
+
+        <div class="admin-grid">
+          <div class="card admin-only" id="user-settings-card">
+            <div class="card-header">
+              <h3>Configurações de Usuários</h3>
+              <span class="badge">Perfil</span>
+            </div>
+            <form id="user-settings-form" class="stacked">
+              <input type="text" id="edit-name" placeholder="Nome" required />
+              <input type="email" id="edit-email" placeholder="E-mail" disabled />
+              <input type="password" id="edit-password" placeholder="Nova senha (opcional)" />
+              <button type="submit" class="btn secondary">Salvar alterações</button>
+            </form>
+            <p id="user-settings-feedback" class="muted">Selecione um usuário na lista para editar.</p>
+          </div>
+
+          <div class="card admin-only" id="user-status-card">
+            <div class="card-header">
+              <h3>Status dos Usuários</h3>
+              <span class="badge">Painel avançado</span>
+            </div>
+            <div id="user-status-list" class="status-board"></div>
+          </div>
+
+          <div class="card admin-only" id="group-card">
+            <div class="card-header">
+              <h3>Controle de Grupos</h3>
+              <span class="badge">Permissões</span>
+            </div>
+            <form id="group-form" class="stacked">
+              <input type="text" id="group-name" placeholder="Nome do grupo" required />
+              <div class="permissions">
+                <label><input type="checkbox" value="painel" checked /> Painel</label>
+                <label><input type="checkbox" value="usuarios" /> Usuários</label>
+                <label><input type="checkbox" value="perguntas" /> Perguntas</label>
+              </div>
+              <button type="submit" class="btn secondary">Adicionar grupo</button>
+            </form>
+            <div id="group-list" class="group-list"></div>
+          </div>
+
+          <div class="card admin-only" id="user-card">
+            <div class="card-header">
+              <h3>Controle de Acesso</h3>
+              <span class="badge">Usuários</span>
+            </div>
+            <form id="user-form" class="stacked">
+              <input type="text" id="user-name" placeholder="Nome" required />
+              <input type="email" id="user-email" placeholder="E-mail" required />
+              <input type="password" id="user-password" placeholder="Senha" required />
+              <select id="user-role">
+                <option value="operador">Operador</option>
+                <option value="gestor">Gestor</option>
+                <option value="admin">Administrador</option>
+              </select>
+              <select id="user-group"></select>
+              <button type="submit" class="btn secondary">Criar usuário</button>
+            </form>
+            <div id="user-list" class="user-list"></div>
+          </div>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <div id="settings-panel" class="settings-panel hidden" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+    <header class="settings-panel__header">
+      <div>
+        <p class="eyebrow">Preferências</p>
+        <h4 id="settings-title">Configurações</h4>
+      </div>
+      <button id="close-settings" class="icon-btn" title="Fechar configurações">✕</button>
+    </header>
+    <div class="settings-panel__content">
+      <label class="setting-row">
+        <div>
+          <strong>Desativar notificações</strong>
+          <p class="muted">Silencia o som ao enviar mensagens e receber alertas.</p>
+        </div>
+        <input type="checkbox" id="mute-toggle" class="toggle-input" />
+      </label>
+
+      <div class="setting-row">
+        <div>
+          <strong>Status de usuário</strong>
+          <p class="muted">Escolha como deseja aparecer para a equipe.</p>
+        </div>
+        <div class="status-options" role="group" aria-label="Status de usuário">
+          <button type="button" class="status-pill" data-status="online">Online</button>
+          <button type="button" class="status-pill" data-status="ausente">Ausente</button>
+          <button type="button" class="status-pill" data-status="offline">Offline</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="notification-popup" class="notification-popup hidden">
+    <div class="notification-popup__header">
+      <h4>Notificações do chat</h4>
+      <button id="close-notifications" class="icon-btn" title="Fechar">✕</button>
+    </div>
+    <div id="notification-list" class="notification-list"></div>
+  </div>
+
+  <aside id="nav-drawer" class="nav-drawer">
+    <div class="nav-drawer__header">
+      <div class="avatar">👤</div>
+      <div>
+        <p class="muted">Olá,</p>
+        <strong id="drawer-username">Usuário</strong>
+        <span id="user-status" class="status-chip">Online</span>
+      </div>
+    </div>
+    <nav class="nav-drawer__menu">
+      <button class="nav-item" data-action="home">Início</button>
+      <button class="nav-item" data-action="admin">Opções de Administrador</button>
+      <button class="nav-item" data-action="settings">Configurações</button>
+      <button class="nav-item logout" data-action="logout">Sair</button>
+    </nav>
+  </aside>
+
+  <script src="script.js"></script>
+</body>
+</html>
