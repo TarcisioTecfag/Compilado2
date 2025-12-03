@@ -599,6 +599,9 @@ function syncMonitoringVisibility() {
   if (!monitoringPanel) return;
   const shouldShow = isAdminUser() && currentView === 'chat';
   monitoringPanel.classList.toggle('hidden', !shouldShow);
+  if (layout) {
+    layout.classList.toggle('has-monitoring', shouldShow);
+  }
 }
 
 function completeLogin(user) {
@@ -1894,6 +1897,12 @@ function adjustAncestorHeights(branch) {
     mindmap: document.getElementById('mindmap-view'),
   };
 
+  const updateActiveTabs = (name) => {
+    viewButtons.forEach((btn) => {
+      btn.classList.toggle('view-tab--active', btn.dataset.view === name);
+    });
+  };
+
   const setView = (name) => {
     currentView = name;
     Object.entries(viewSections).forEach(([key, section]) => {
@@ -1905,6 +1914,7 @@ function adjustAncestorHeights(branch) {
       layout.setAttribute('data-view', name);
     }
 
+    updateActiveTabs(name);
     syncMonitoringVisibility();
   };
 
