@@ -113,6 +113,7 @@ let notificationAudioCtx = null;
 let drawerOpen = false;
 let scrollHidden = false;
 let lastScrollY = window.scrollY;
+let overlayOpen = false;
 
 toast.className = 'toast';
 document.body.appendChild(toast);
@@ -175,13 +176,20 @@ function showToast(message) {
   toastTimeout = setTimeout(() => toast.classList.remove('show'), 1800);
 }
 
+function syncOverlayState() {
+  const adminOpen = adminOverlay && !adminOverlay.classList.contains('hidden');
+  const settingsOpen = settingsPanel && !settingsPanel.classList.contains('hidden');
+  overlayOpen = Boolean(adminOpen || settingsOpen);
+  applyTopbarVisibility();
+}
+
 function showAccessWarning() {
   showToast('Apenas administradores podem acessar estas opções.');
 }
 
 function applyTopbarVisibility() {
   if (!topbar) return;
-  const shouldHide = drawerOpen || scrollHidden;
+  const shouldHide = drawerOpen || scrollHidden || overlayOpen;
   topbar.classList.toggle('topbar--hidden', shouldHide);
 }
 
@@ -1001,12 +1009,15 @@ function showAdminView() {
     adminOverlay.classList.remove('hidden');
     adminOverlay.classList.add('open');
   }
+  overlayOpen = true;
+  applyTopbarVisibility();
 }
 
 function hideAdminPanel() {
   if (!adminOverlay) return;
   adminOverlay.classList.add('hidden');
   adminOverlay.classList.remove('open');
+  syncOverlayState();
 }
 
 function openSettingsPanel() {
@@ -1014,11 +1025,14 @@ function openSettingsPanel() {
   ensurePreferences();
   renderStatus();
   settingsPanel.classList.remove('hidden');
+  overlayOpen = true;
+  applyTopbarVisibility();
 }
 
 function closeSettingsPanel() {
   if (!settingsPanel) return;
   settingsPanel.classList.add('hidden');
+  syncOverlayState();
 }
 
 function logoutUser() {
@@ -1034,6 +1048,7 @@ function logoutUser() {
   navDrawer.classList.remove('open');
   drawerOpen = false;
   scrollHidden = false;
+  overlayOpen = false;
   hideAdminPanel();
   closeSettingsPanel();
   applyTopbarVisibility();
@@ -1874,6 +1889,10 @@ function adjustAncestorHeights(branch) {
       if (!section) return;
       section.classList.toggle('hidden', key !== name);
     });
+
+    if (monitoringPanel) {
+      monitoringPanel.classList.toggle('hidden', name !== 'chat');
+    }
   };
 
   viewButtons.forEach((btn) => {
