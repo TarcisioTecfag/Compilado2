@@ -81,7 +81,7 @@ const defaultGroups = [
 const defaultUsers = [
   { name: 'Ana Ribeiro', email: 'ana@empresa.com', password: '123', role: 'gestor', group: 'Supervisão' },
   { name: 'Carlos Lima', email: 'carlos@empresa.com', password: '123', role: 'operador', group: 'Operações' },
-  { name: 'Tarcisio', email: 'suporte2@tecfag.com.br', password: '123', role: 'admin', group: 'Supervisão' },
+  { name: 'Suporte Tecfag', email: 'suporte2@tecfag.com.br', password: '123', role: 'admin', group: 'Supervisão' },
 ];
 
 const thinkingMessages = [
