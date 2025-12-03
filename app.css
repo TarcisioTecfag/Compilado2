@@ -464,13 +464,6 @@ body.login-active {
   box-shadow: 0 12px 28px rgba(220, 62, 62, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 
-.view-tab--active {
-  background: linear-gradient(120deg, rgba(255, 18, 79, 0.95), rgba(255, 81, 47, 0.9));
-  color: #1d0308;
-  border-color: rgba(255, 255, 255, 0.14);
-  box-shadow: 0 14px 30px rgba(255, 18, 79, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.16);
-}
-
 .nav-pill,
 .brand-btn {
   background: none;
@@ -1371,6 +1364,13 @@ body {
   transform: translateY(-1px);
   border-color: rgba(255, 18, 79, 0.5);
   background: linear-gradient(145deg, rgba(255, 18, 79, 0.12), rgba(255, 81, 47, 0.1));
+}
+
+.view-tab.view-tab--active {
+  background: linear-gradient(120deg, rgba(255, 18, 79, 0.95), rgba(255, 81, 47, 0.9));
+  color: #1d0308;
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 14px 30px rgba(255, 18, 79, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.16);
 }
 
 .actions {
