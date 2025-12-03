@@ -1614,6 +1614,7 @@ init();
 
     initializeCatalog();
 // Auto-generated mind map data
+const sheetTables = appData.sheetTables || [];
 function buildTreeFromSheets(sheets) {
   return {
     title: 'Mapa Mental Tecfag',
@@ -1641,11 +1642,10 @@ function buildTreeFromSheets(sheets) {
 
 const data = buildTreeFromSheets(sheetTables);
 
-const sheetTables = appData.sheetTables || [];
 const mindmap = document.getElementById('mindmap');
 const expandAllBtn = document.getElementById('expand-all');
 const collapseAllBtn = document.getElementById('collapse-all');
-const searchInput = document.getElementById('search');
+const mindmapSearchInput = document.getElementById('search');
 function setMeasuredHeight(branch) {
   branch.style.maxHeight = "none";
   const height = branch.scrollHeight;
@@ -1850,7 +1850,7 @@ requestAnimationFrame(syncBranchHeights);
 expandAllBtn.addEventListener("click", () => toggleAll(true));
 collapseAllBtn.addEventListener("click", () => toggleAll(false));
 window.addEventListener("resize", refreshExpandedHeights);
-searchInput?.addEventListener("input", (event) => applySearch(event.target.value));
+mindmapSearchInput?.addEventListener("input", (event) => applySearch(event.target.value));
 
 function adjustAncestorHeights(branch) {
   let current = branch;
