@@ -19,6 +19,7 @@ const chatForm = document.getElementById('chat-form');
 const chatInput = document.getElementById('chat-input');
 const chatThread = document.getElementById('chat-thread');
 const interactionLog = document.getElementById('interaction-log');
+const layout = document.querySelector('.layout');
 const userForm = document.getElementById('user-form');
 const userList = document.getElementById('user-list');
 const userGroupSelect = document.getElementById('user-group');
@@ -114,6 +115,7 @@ let drawerOpen = false;
 let scrollHidden = false;
 let lastScrollY = window.scrollY;
 let overlayOpen = false;
+let currentView = 'chat';
 
 toast.className = 'toast';
 document.body.appendChild(toast);
@@ -593,10 +595,17 @@ function showLoginError(message) {
   loginError.classList.remove('hidden');
 }
 
+function syncMonitoringVisibility() {
+  if (!monitoringPanel) return;
+  const shouldShow = isAdminUser() && currentView === 'chat';
+  monitoringPanel.classList.toggle('hidden', !shouldShow);
+}
+
 function completeLogin(user) {
   currentUser = user;
   loginError.classList.add('hidden');
   document.body.classList.remove('login-active');
+  document.body.classList.add('app-ready');
   loginSection.classList.add('hidden');
   appSection.classList.remove('hidden');
   localStorage.setItem(STORAGE_KEYS.session, JSON.stringify({ email: user.email }));
@@ -979,7 +988,7 @@ function applyPermissions() {
     adminNavItem.classList.toggle('nav-item--disabled', !adminOnly);
     adminNavItem.disabled = !adminOnly;
   }
-  if (monitoringPanel) monitoringPanel.classList.toggle('hidden', !adminOnly);
+  syncMonitoringVisibility();
   if (notificationButton) notificationButton.classList.toggle('hidden', !adminOnly);
   if (notificationPopup && !adminOnly) notificationPopup.classList.add('hidden');
   homeView.classList.toggle('single-column', !adminOnly);
@@ -1045,6 +1054,7 @@ function logoutUser() {
   appSection.classList.add('hidden');
   loginSection.classList.remove('hidden');
   document.body.classList.add('login-active');
+  document.body.classList.remove('app-ready');
   navDrawer.classList.remove('open');
   drawerOpen = false;
   scrollHidden = false;
@@ -1055,7 +1065,7 @@ function logoutUser() {
   loginError.classList.add('hidden');
   loginForm.reset();
   homeView.classList.remove('single-column');
-  if (monitoringPanel) monitoringPanel.classList.remove('hidden');
+  if (monitoringPanel) monitoringPanel.classList.add('hidden');
   if (adminNavItem) adminNavItem.classList.remove('nav-item--disabled');
   if (settingsNavItem) settingsNavItem.classList.remove('nav-item--disabled');
   updateNotificationBadge();
@@ -1885,14 +1895,17 @@ function adjustAncestorHeights(branch) {
   };
 
   const setView = (name) => {
+    currentView = name;
     Object.entries(viewSections).forEach(([key, section]) => {
       if (!section) return;
       section.classList.toggle('hidden', key !== name);
     });
 
-    if (monitoringPanel) {
-      monitoringPanel.classList.toggle('hidden', name !== 'chat');
+    if (layout) {
+      layout.setAttribute('data-view', name);
     }
+
+    syncMonitoringVisibility();
   };
 
   viewButtons.forEach((btn) => {
