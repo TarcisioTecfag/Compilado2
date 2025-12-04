@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Assistente TECFAG</title>
+  <title>Assistente Tecfag Integrado</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="app.css" />
 </head>
 <body class="login-active">
   <main id="login-section" class="login">
@@ -82,11 +82,10 @@
   <div id="app" class="page page-app hidden">
     <header class="topbar">
       <div class="topbar-left">
-        <button class="brand-btn" type="button">ASSISTENTE TECFAG</button>
+        <button class="brand-btn view-tab" type="button" data-view="chat">ASSISTENTE TECFAG</button>
         <nav class="topbar-nav" aria-label="Atalhos">
-          <button class="nav-pill" type="button">Mapas Mentais</button>
-          <button class="nav-pill" type="button">Catálogos</button>
-          <button class="nav-pill" type="button">Dinâmicas</button>
+          <button class="nav-pill view-tab" type="button" data-view="mindmap">Mapa Mental</button>
+          <button class="nav-pill view-tab" type="button" data-view="catalog">Catálogo</button>
         </nav>
       </div>
       <div class="actions">
@@ -99,8 +98,8 @@
       </div>
     </header>
 
-    <main id="home-view" class="layout">
-      <section class="chat-panel">
+    <main class="layout">
+      <section id="home-view" class="chat-panel section-view">
         <div class="hero">
           <p class="hero-text">Pergunte sobre qualquer máquina!</p>
         </div>
@@ -122,6 +121,52 @@
         </div>
 
         <div id="chat-thread" class="chat-thread"></div>
+      </section>
+
+      <section id="catalog-view" class="section-view hidden">
+        <div class="topbar-search">
+          <div class="search-box">
+            <input id="searchInput" type="search" placeholder="Buscar por nome da máquina..." aria-label="Buscar produtos" />
+            <span class="badge" id="resultCount"></span>
+          </div>
+        </div>
+        <section class="tag-manager" aria-labelledby="tagManagerTitle">
+          <div class="tag-manager-header">
+            <div class="tag-manager-title">
+              <button id="tagToggle" class="tag-toggle" type="button" aria-expanded="true" aria-controls="tagManagerContent">⌃</button>
+              <h2 id="tagManagerTitle">Gerenciar tags</h2>
+            </div>
+            <div class="tag-form" id="tagFormRow">
+              <input id="tagInput" type="text" placeholder="Criar ou editar uma tag" aria-label="Campo para nova tag" />
+              <button id="saveTagButton" type="button">Salvar tag</button>
+              <button id="cancelEditButton" class="secondary" type="button" hidden>Cancelar</button>
+            </div>
+          </div>
+          <div id="tagManagerContent" class="tag-manager-content">
+            <div id="tagList" class="tag-list" aria-live="polite"></div>
+          </div>
+        </section>
+        <div class="catalog-grid" id="catalogGrid"></div>
+        <div class="empty-state" id="emptyState" hidden>Nenhum produto encontrado para este filtro.</div>
+      </section>
+
+      <section id="mindmap-view" class="section-view hidden">
+        <header class="page-header">
+          <div class="header-content">
+            <label class="search" aria-label="Buscar no mapa mental">
+              <span class="search-icon" aria-hidden="true">🔍</span>
+              <input id="search" type="search" placeholder="Buscar por código, título ou medida" />
+            </label>
+            <div class="actions">
+              <button id="expand-all" class="ghost-button" type="button">Expandir Todos</button>
+              <button id="collapse-all" class="ghost-button" type="button">Fechar Todos</button>
+            </div>
+          </div>
+          <p class="subtitle">Clique em qualquer tópico para expandir ou recolher seus subtópicos.</p>
+        </header>
+        <section class="mindmap-wrapper">
+          <div id="mindmap" class="mindmap" aria-label="Mapa mental interativo"></div>
+        </section>
       </section>
 
       <aside id="monitoring-panel" class="side-panel">
@@ -268,6 +313,54 @@
     </nav>
   </aside>
 
-  <script src="script.js"></script>
+  <div class="detail-modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+    <div class="detail-card">
+      <div class="detail-content">
+        <div class="detail-main">
+          <div class="detail-header">
+            <div class="detail-gallery">
+              <img id="detailImage" class="detail-main-image" alt="Imagem detalhada do produto">
+              <div id="thumbnailGrid" class="thumbnail-grid"></div>
+            </div>
+            <div>
+              <h2 id="detailTitle"></h2>
+              <p class="price" id="detailPrice"></p>
+              <div class="tags" id="detailTags"></div>
+            </div>
+          </div>
+          <div class="detail-body" id="detailDescription"></div>
+          <div class="observations">
+            <label for="detailObservations">Observações</label>
+            <textarea id="detailObservations" placeholder="Digite observações sobre o produto"></textarea>
+          </div>
+        </div>
+        <aside class="detail-sidebar" aria-label="Painel do item">
+          <h3>Gerenciar item</h3>
+          <div class="video-block" aria-label="Vídeo do produto">
+            <h3>Vídeo demonstrativo</h3>
+            <div id="videoFrame" class="video-frame"></div>
+          </div>
+          <div class="sidebar-group">
+            <div class="tag-controls">
+              <select id="detailTagSelect" class="tag-select">
+                <option value="">Adicionar tag existente</option>
+              </select>
+              <button id="detailAddTag" type="button">Adicionar tag</button>
+            </div>
+            <label class="upload-label secondary">
+              Carregar imagens (até 4)
+              <input id="detailUpload" type="file" accept="image/*" class="upload-input" multiple />
+            </label>
+          </div>
+        </aside>
+      </div>
+      <div class="detail-footer">
+        <button id="downloadDocs" type="button">Baixar documentos</button>
+        <button class="secondary" id="closeModal">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
